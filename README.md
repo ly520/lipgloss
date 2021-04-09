@@ -1,5 +1,5 @@
 Lip Gloss
-=========
+=======
 
 <p>
     <img src="https://stuff.charm.sh/lipgloss/lipgloss-header-github.png" width="340" alt="Lip Gloss Title Treatment"><br>
@@ -8,12 +8,13 @@ Lip Gloss
     <a href="https://github.com/charmbracelet/lipgloss/actions"><img src="https://github.com/charmbracelet/lipgloss/workflows/build/badge.svg" alt="Build Status"></a>
 </p>
 
-Style definitions for nice terminal layouts. Built with TUIs in mind.
+漂亮的终端布局的样式定义。建造时考虑了TUIs。
 
 ![Lip Gloss example](https://stuff.charm.sh/lipgloss/lipgloss-example.png)
 
-Lip Gloss takes an expressive, declarative approach to terminal rendering.
-Users familiar with CSS will feel at home with Lip Gloss.
+Lip Gloss 采用了一种表达性的、陈述性的方法来进行终端渲染。
+
+熟悉CSS的用户使用Lip Gloss会感到宾至如归。 
 
 ```go
 
@@ -33,22 +34,22 @@ var style = lipgloss.NewStyle().
 
 ## Colors
 
-Lip Gloss supports the following color profiles:
+Lip Gloss 支持以下颜色配置：
 
 ### ANSI 16 colors (4-bit)
 
 ```go
-lipgloss.Color("5")  // magenta
-lipgloss.Color("9")  // red
-lipgloss.Color("12") // light blue
+lipgloss.Color("5")  // magenta 洋红
+lipgloss.Color("9")  // red 红
+lipgloss.Color("12") // light blue 浅蓝
 ```
 
 ### ANSI 256 Colors (8-bit)
 
 ```go
-lipgloss.Color("86")  // aqua
-lipgloss.Color("201") // hot pink
-lipgloss.Color("202") // orange
+lipgloss.Color("86")  // aqua 湖绿色
+lipgloss.Color("201") // hot pink 艳粉色
+lipgloss.Color("202") // orange 橙色
 ```
 
 ### True Color (24-bit)
@@ -59,26 +60,25 @@ lipgloss.Color("#04B575") // a green
 lipgloss.Color("#3C3C3C") // a dark gray
 ```
 
-The terminal's color profile will be automatically detected, and colors outside
-the gamut of the current palette will be automatically coerced to their closest
-available value.
+终端的颜色配置文件将被自动检测，并且外部的颜色当前调色板的色域将自动强制到最接近的色域
+
+可用值。
 
 
-### Adaptive Colors
+### 自适应颜色
 
-You can also specify color options for light and dark backgrounds:
+您还可以为浅色和深色背景指定颜色选项:
 
 ```go
 lipgloss.AdaptiveColor{Light: "236", Dark: "248"}
 ```
 
-The terminal's background color will automatically be detected and the
-appropriate color will be chosen at runtime.
+将自动检测终端的背景色，并运行时将选择适当的颜色。
 
 
-## Inline Formatting
+## 内联格式
 
-Lip Gloss supports the usual ANSI text formatting options:
+Lip Gloss支持常见的ANSI文本格式选项:
 
 ```go
 var style = lipgloss.NewStyle().
@@ -92,9 +92,9 @@ var style = lipgloss.NewStyle().
 ```
 
 
-## Block-Level Formatting
+## 块级格式
 
-Lip Gloss also supports rules for block-level formatting:
+Lip Gloss 同样支持块级格式:
 
 ```go
 // Padding
@@ -112,8 +112,7 @@ var style = lipgloss.NewStyle().
     MarginLeft(4)
 ```
 
-There is also shorthand syntax for margins and padding, which follows the same
-format as CSS:
+页边距和填充也有速记语法，和CSS有着相同的语法格式:
 
 ```go
 // 2 cells on all sides
@@ -125,15 +124,15 @@ lipgloss.NewStyle().Margin(2, 4)
 // 1 cell on the top, 4 cells on the sides, 2 cells on the bottom
 lipgloss.NewStyle().Padding(1, 4, 2)
 
-// Clockwise, starting from the top: 2 cells on the top, 4 on the right, 3 on
-// the bottom, and 1 on the left
+// 顺时针方向，从顶部开始：顶部2个单元格，右侧4个单元格，右侧3个单元格
+// 底部和左边各一个
 lipgloss.NewStyle().Margin(2, 4, 3, 1)
 ```
 
 
-## Aligning Text
+## 文本对齐
 
-You can align paragraphs of text to the left, right, or center.
+可以将文本段落对齐到左侧、右侧或中间。
 
 ```go
 var style = lipgloss.NewStyle().
@@ -144,9 +143,9 @@ var style = lipgloss.NewStyle().
 ```
 
 
-## Width and Height
+## 宽、高
 
-Setting a minimim width and height is simple and straightforward.
+设置最小宽度和高度是简单而直接的。
 
 ```go
 var str = lipgloss.NewStyle().
@@ -157,9 +156,9 @@ var str = lipgloss.NewStyle().
 ```
 
 
-## Copying Styles
+## 复制样式
 
-Just use `Copy()`:
+使用 `Copy()`函数:
 
 ```go
 var style = lipgloss.NewStyle().Foreground(lipgloss.Color("219"))
@@ -167,23 +166,20 @@ var style = lipgloss.NewStyle().Foreground(lipgloss.Color("219"))
 var wildStyle = style.Copy().Blink(true)
 ```
 
-`Copy()` performs a copy on the underlying data structure ensuring that you get
-a true, dereferenced copy of a style. Without copying it's possible to mutate
-styles.
+`Copy()` 对基础数据结构执行复制，确保一种样式的真实的、未引用的副本。不复制就有可能变异风格。
 
 
-## Inheritance
+## 继承
 
-Styles can inherit rules from other styles. When inheriting, only unset rules
-on the receiver are inherited.
+样式可以从其他样式继承规则。继承时，只有未设置的规则在接收器上是继承的。
 
 ```go
 var styleA = lipgloss.NewStyle().
     Foreground(lipgloss.Color("229")).
     Background(lipgloss.Color("63"))
 
-// Only the background color will be inherited here, because the foreground
-// color will have been already set:
+//这里只继承背景色，因为前景
+//颜色已经设置好了
 var styleB = lipgloss.NewStyle().
     Foreground(lipgloss.Color("201")).
     Inherit(styleA)
@@ -202,29 +198,28 @@ var style = lipgloss.NewStyle().
     UnsetBackground()                  // never mind
 ```
 
-When a rule is unset, it won't be inherited or copied.
+当一个规则被使用 `unset` 时，它将不会被继承或复制。
 
 
-## Enforcing Rules
+## 强制执行规则
 
-Sometimes, such as when developing a component, you want to make sure style
-definitions respect their intended purpose in the UI. This is where `Inline`
-and `MaxWidth`, and `MaxHeight` come in:
+有时，例如在开发组件时，您需要确定样式定义在UI中尊重其预期用途。这是`Inline`
+`MaxWidth` 和 `MaxHeight`的作用：
 
 ```go
-// Force rendering onto a single line, ignoring margins, padding, and borders.
+// 强制渲染到一行，忽略边距、填充和边框。
 someStyle.Inline(true).Render("yadda yadda")
 
-// Also limit rendering to five cells
+// 同时将渲染限制为五个单元格
 someStyle.Inline(true).MaxWidth(5).Render("yadda yadda")
 
-// Limit rendering to a 5x5 cell block
+// 将渲染限制为5x5单元块
 someStyle.MaxWidth(5).MaxHeight(5).Render("yadda yadda")
 ```
 
-## Rendering
+## 渲染
 
-Generally, you just call the `Render(string)` method on a `lipgloss.Style`:
+通常，您只需调用`Render(string)` 来渲染一个 `lipgloss.Style`:
 
 ```go
 fmt.Println(lipgloss.NewStyle().Bold(true).Render("Hello, kitty."))
@@ -239,73 +234,69 @@ fmt.Printf("%s\n", style)
 ```
 
 
-## Joining Paragraphs
+## 链接段落
 
-There are also some utility functions for horizontally and vertically joining
-paragraphs of text.
+还有一些用于水平和垂直连接的实用函数文本段落。
 
 ```go
-// Horizontally join three paragraphs along their bottom edges
+// 沿底部边缘水平连接三个段落
 lipgloss.HorizontalJoin(lipgloss.Bottom, paragraphA, paragraphB, paragraphC)
 
-// Vertically join two paragraphs along their center axes
+// 沿中心轴垂直连接两个段落
 lipgloss.VerticalJoin(lipgloss.Center, paragraphA, paragraphB)
 
-// Horizontally join three paragraphs, with the shorter ones aligning 20%
-// from the top of the tallest
+//横向连接三个段落，较短的段落对齐20%
+//从顶部开始
 lipgloss.HorizontalJoin(0.2, paragraphA, paragraphB, paragraphC)
 ```
 
 
-## Placing Text in Whitespace
+## 在空白中放置文本
 
-Sometimes you simply want to place a block of text in whitespace.
+有时你只是想把一个文本块放在空白处。
 
 ```go
-// Center a paragraph horizontally in a space 80 cells wide. The height of
-// the block returned will be as tall as the input paragraph.
+//在80个单元格宽的空间中水平居中放置段落。
+//返回块的高度与输入段落一样。
 block := lipgloss.PlaceHorizontal(80, lipgloss.Center, fancyStyledParagraph)
 
-// Place a paragraph at the bottom of a space 30 cells tall. The width of
-// the text block returned will be as wide as the input paragraph.
+//在30格高的空格底部放一段。
+//返回的文本块的宽度与输入段落一样。
 block := lipgloss.PlaceVertical(30, lipgloss.Bottom, fancyStyledParagraph)
 
-// Place a paragraph in the bottom right corner of a 30x80 cell space.
+// 在30x80单元格的右下角放置段落。
 block := lipgloss.Place(30, 80, lipgloss.Right, lipgloss.Bottom, fancyStyledParagraph)
 ```
 
-You can also style the whitespace. For details, see [the docs][docs].
+您还可以设置空白的样式。有关详细信息： [the docs][docs].
 
 ***
 
 
 ## What about [Bubble Tea][tea]?
 
-Lip Gloss doesn’t replace Bubble Tea. Rather, it is an excellent Bubble Tea
-companion. It was designed to make assembling terminal user interface views as
-simple and fun as possible so that you can focus on building your application
-instead of concerning yourself with low-level layout details.
+`Lip Gloss` 不能代替 `Bubble Tea`。相反，它是一种很好的 `Bubble Tea`同伴。它的目的是使组装终端用户界面视图尽可能简单有趣，这样您就可以专注于构建应用程序而不是关注你自己的低层次的布局细节。
 
-In simple terms, you can use Lip Gloss to help build your Bubble Tea views.
+简单地说，你可以用 `Lip Gloss` 来帮助建立你的 `Bubble Tea` 的界面。
 
 [tea]: https://github.com/charmbracelet/tea
 
 
 ## Under the Hood
 
-Lip Gloss is built on the excellent [Termenv][termenv] and [Reflow][reflow]
-libraries which deal with color and ANSI-aware text operations, respectively.
-For many use cases Termenv and Reflow will be sufficient for your needs.
+`Lip Gloss` 是建立在优秀的[Termenv][termenv]和[Reflow][reflow]的基础上的。
+分别处理颜色和ANSI感知文本操作的库。
+对于许多用例，`Termenv`和`Reflow`就足以满足您的需求。
 
 [termenv]: https://github.com/muesli/termenv
 [reflow]: https://github.com/muesli/reflow
 
 
-## Rendering Markdown
+## 渲染 Markdown
 
-For a more document-centric rendering solution with support for things like
-lists, tables, and syntax-highlighted code have a look at [Glamour][glamour],
-the stylesheet-based Markdown renderer.
+对于更多的以文档为中心的渲染解决方案，支持列表、表格和语法突出显示的代码可以查看[Glamour][glamour]，
+
+基于样式表的标记呈现器。
 
 [glamour]: https://github.com/charmbracelet/glamour
 
