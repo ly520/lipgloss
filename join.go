@@ -15,6 +15,9 @@ import (
 // If you just want to align to the left, right or center you may as well just
 // use the helper constants Top, Center, and Bottom.
 //
+// JoinHorizontal是一个实用函数，用于沿垂直轴水平连接两个可能的多行字符串。
+// 第一个参数是位置，0始终位于顶部，1始终位于底部。
+// 如果您只想左对齐、右对齐或居中对齐，您也可以使用helper常量Top、center和Bottom。
 // Example:
 //
 //     blockB := "...\n...\n..."
@@ -26,6 +29,7 @@ import (
 //     // Join on the top edge
 //     str := lipgloss.JoinHorizontal(lipgloss.Top, blockA, blockB)
 //
+// 链接两个文本块
 func JoinHorizontal(pos Position, strs ...string) string {
 	if len(strs) == 0 {
 		return ""

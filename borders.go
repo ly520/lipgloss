@@ -103,19 +103,20 @@ func (s Style) applyBorder(str string) string {
 		hasBottom = s.getAsBool(borderBottomKey, false)
 		hasLeft   = s.getAsBool(borderLeftKey, false)
 
-		topFG    = s.getAsColor(borderTopForegroundKey)
-		rightFG  = s.getAsColor(borderRightForegroundKey)
-		bottomFG = s.getAsColor(borderBottomForegroundKey)
-		leftFG   = s.getAsColor(borderLeftForegroundKey)
+		topFGColor    = s.getAsColor(borderTopFGColorKey)
+		rightFGColor  = s.getAsColor(borderRightFGColorKey)
+		bottomFGColor = s.getAsColor(borderBottomFGColorKey)
+		leftFGColor   = s.getAsColor(borderLeftFGColorKey)
 
-		topBG    = s.getAsColor(borderTopBackgroundKey)
-		rightBG  = s.getAsColor(borderRightBackgroundKey)
-		bottomBG = s.getAsColor(borderBottomBackgroundKey)
-		leftBG   = s.getAsColor(borderLeftBackgroundKey)
+		topBGColor    = s.getAsColor(borderTopBGColorKey)
+		rightBGColor  = s.getAsColor(borderRightBGColorKey)
+		bottomBGColor = s.getAsColor(borderBottomBGColorKey)
+		leftBGColor   = s.getAsColor(borderLeftBGColorKey)
 	)
 
 	// If a border is set and no sides have been specifically turned on or off
 	// render borders on all sides.
+	// 如果设置了边界，并且没有专门打开或关闭任何边，则在所有边上渲染边界
 	if border != noBorder && !(topSet || rightSet || bottomSet || leftSet) {
 		hasTop = true
 		hasRight = true
@@ -124,6 +125,7 @@ func (s Style) applyBorder(str string) string {
 	}
 
 	// If no border is set or all borders are been disabled, abort.
+	// 如果未设置边框或禁用了所有边框，则中止。
 	if border == noBorder || (!hasTop && !hasRight && !hasBottom && !hasLeft) {
 		return str
 	}
@@ -136,6 +138,7 @@ func (s Style) applyBorder(str string) string {
 
 	// Figure out which corners we should actually be using based on which
 	// sides are set to show.
+	// 根据要显示的边，找出我们实际应该使用的角。
 	if hasTop {
 		switch {
 		case !hasLeft && !hasRight:
@@ -164,7 +167,7 @@ func (s Style) applyBorder(str string) string {
 	// Render top
 	if hasTop {
 		top := renderHorizontalEdge(border.TopLeft, border.Top, border.TopRight, width)
-		top = styleBorder(top, topFG, topBG)
+		top = styleBorder(top, topFGColor, topBGColor)
 		out.WriteString(top)
 		out.WriteRune('\n')
 	}
@@ -172,11 +175,11 @@ func (s Style) applyBorder(str string) string {
 	// Render sides
 	for i, l := range lines {
 		if hasLeft {
-			out.WriteString(styleBorder(border.Left, leftFG, leftBG))
+			out.WriteString(styleBorder(border.Left, leftFGColor, leftBGColor))
 		}
 		out.WriteString(l)
 		if hasRight {
-			out.WriteString(styleBorder(border.Right, rightFG, rightBG))
+			out.WriteString(styleBorder(border.Right, rightFGColor, rightBGColor))
 		}
 		if i < len(lines)-1 {
 			out.WriteRune('\n')
@@ -186,7 +189,7 @@ func (s Style) applyBorder(str string) string {
 	// Render bottom
 	if hasBottom {
 		bottom := renderHorizontalEdge(border.BottomLeft, border.Bottom, border.BottomRight, width)
-		bottom = styleBorder(bottom, bottomFG, bottomBG)
+		bottom = styleBorder(bottom, bottomFGColor, bottomBGColor)
 		out.WriteRune('\n')
 		out.WriteString(bottom)
 	}
@@ -195,6 +198,7 @@ func (s Style) applyBorder(str string) string {
 }
 
 // Render the horizontal (top or bottom) portion of a border.
+// 渲染边框的水平（顶部或底部）部分。
 func renderHorizontalEdge(left, middle, right string, width int) string {
 	if width < 1 {
 		return ""
@@ -219,6 +223,7 @@ func renderHorizontalEdge(left, middle, right string, width int) string {
 }
 
 // Apply foreground and background styling to a border.
+// 渲染边框的前景和背景色
 func styleBorder(border string, fg, bg TerminalColor) string {
 	if fg == noColor && bg == noColor {
 		return border

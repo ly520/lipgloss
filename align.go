@@ -10,6 +10,8 @@ import (
 // Perform text alignment. If the string is multi-lined, we also make all lines
 // the same width by padding them with spaces. If a termenv style is passed,
 // use that to style the spaces added.
+// 执行文本对齐。如果字符串是多行的，我们还通过在所有行中填充空格使它们具有相同的宽度。
+// 如果传递了termenv样式，使用它来设置添加的空间的样式。
 func alignText(str string, pos Position, width int, style *termenv.Style) string {
 	lines, widestLine := getLines(str)
 	var b strings.Builder

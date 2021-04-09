@@ -16,6 +16,8 @@ var (
 
 // ColorProfile returns the detected termenv color profile. It will perform the
 // actual check only once.
+// ColorProfile返回检测到的termenv颜色配置文件。它将执行
+// 实际检查仅一次。
 func ColorProfile() termenv.Profile {
 	getColorProfile.Do(func() {
 		colorProfile = termenv.ColorProfile()

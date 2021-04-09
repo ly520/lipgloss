@@ -63,7 +63,7 @@ var (
 
 	tab = lipgloss.NewStyle().
 		Border(tabBorder, true).
-		BorderForeground(highlight).
+		BorderForegroundColor(highlight).
 		Padding(0, 1)
 
 	activeTab = tab.Copy().Border(activeTabBorder, true)
@@ -88,13 +88,13 @@ var (
 	infoStyle = lipgloss.NewStyle().
 			BorderStyle(lipgloss.NormalBorder()).
 			BorderTop(true).
-			BorderForeground(subtle)
+			BorderForegroundColor(subtle)
 
 	// Dialog.
 
 	dialogBoxStyle = lipgloss.NewStyle().
 			Border(lipgloss.RoundedBorder()).
-			BorderForeground(lipgloss.Color("#874BFD")).
+			BorderForegroundColor(lipgloss.Color("#874BFD")).
 			Padding(1, 0).
 			BorderTop(true).
 			BorderLeft(true).
@@ -117,7 +117,7 @@ var (
 
 	list = lipgloss.NewStyle().
 		Border(lipgloss.NormalBorder(), false, true, false, false).
-		BorderForeground(subtle).
+		BorderForegroundColor(subtle).
 		MarginRight(2).
 		Height(8).
 		Width(columnWidth + 1)
@@ -125,7 +125,7 @@ var (
 	listHeader = lipgloss.NewStyle().
 			BorderStyle(lipgloss.NormalBorder()).
 			BorderBottom(true).
-			BorderForeground(subtle).
+			BorderForegroundColor(subtle).
 			MarginRight(2).
 			Render
 
@@ -285,7 +285,6 @@ func main() {
 			),
 		),
 	)
-
 	doc.WriteString(lipgloss.JoinHorizontal(lipgloss.Top, lists, colors))
 
 	// Marmalade history

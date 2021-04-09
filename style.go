@@ -10,9 +10,11 @@ import (
 )
 
 // Property for a key.
+// 属性key
 type propKey int
 
 // Available properties.
+// 可用属性
 const (
 	boldKey propKey = iota
 	italicKey
@@ -52,16 +54,16 @@ const (
 	borderLeftKey
 
 	// Border foreground colors.
-	borderTopForegroundKey
-	borderRightForegroundKey
-	borderBottomForegroundKey
-	borderLeftForegroundKey
+	borderTopFGColorKey
+	borderRightFGColorKey
+	borderBottomFGColorKey
+	borderLeftFGColorKey
 
 	// Border background colors.
-	borderTopBackgroundKey
-	borderRightBackgroundKey
-	borderBottomBackgroundKey
-	borderLeftBackgroundKey
+	borderTopBGColorKey
+	borderRightBGColorKey
+	borderBottomBGColorKey
+	borderLeftBGColorKey
 
 	inlineKey
 	maxWidthKey
@@ -71,16 +73,22 @@ const (
 )
 
 // A set of properties.
+// 属性集合，用来存储样式属性
 type rules map[propKey]interface{}
 
 // NewStyle returns a new, empty Style.  While it's syntactic sugar for the
 // Style{} primitive, it's recommended to use this function for creating styles
 // incase the underlying implementation changes.
+
+// NewStyle返回一个新的空样式。虽然这是语法上的糖
+// Style{}原语，建议使用此函数创建样式
+// 以防底层实现发生变化。
 func NewStyle() Style {
 	return Style{}
 }
 
 // Style contains a set of rules that comprise a style as a whole.
+// 样式包含一组规则，这些规则构成了一个整体的样式。
 type Style struct {
 	rules map[propKey]interface{}
 	value string
@@ -99,11 +107,13 @@ func (s Style) SetString(str string) Style {
 // String implements stringer for a Style, returning the rendered result based
 // on the rules in this style. An underlying string value must be set with
 // Style.SetString prior to using this method.
+// 根据style设置好的字符串和样式进行渲染，返回渲染好的字符串
 func (s Style) String() string {
 	return s.Render(s.value)
 }
 
 // Copy returns a copy of this style, including any underlying string values.
+// 复制样式，包含字符串和样式规则
 func (s Style) Copy() Style {
 	o := NewStyle()
 	o.init()
@@ -119,6 +129,8 @@ func (s Style) Copy() Style {
 // style in argument will be applied.
 //
 // Margins, padding, and underlying string values are not inherited.
+// 从Style对象继承样式，只有明确的未设置的样式才会应用
+// Margins, padding, 以及 字符串不会被继承
 func (s Style) Inherit(i Style) Style {
 	s.init()
 
@@ -126,9 +138,11 @@ func (s Style) Inherit(i Style) Style {
 		switch k {
 		case marginTopKey, marginRightKey, marginBottomKey, marginLeftKey:
 			// Margins are not inherited
+			// margins 不继承
 			continue
 		case paddingTopKey, paddingRightKey, paddingBottomKey, paddingLeftKey:
 			// Padding is not inherited
+			// Padding 不继承
 			continue
 		case backgroundKey:
 			s.rules[k] = v
@@ -148,6 +162,7 @@ func (s Style) Inherit(i Style) Style {
 }
 
 // Render applies the defined style formatting to a given string.
+// 使用定义的样式格式渲染字符串
 func (s Style) Render(str string) string {
 	var (
 		te           termenv.Style
@@ -184,14 +199,18 @@ func (s Style) Render(str string) string {
 
 		// Do we need to style whitespace (padding and space outside
 		// paragraphs) separately?
+		// 是否需要单独设置空白（段落外的填充和空格）的样式
 		styleWhitespace = reverse
 
 		// Do we need to style spaces separately?
+		// 是否需要单独的样式空间
 		useSpaceStyler = underlineSpaces || strikethroughSpaces
 	)
 
 	// Enable support for ANSI on the legacy Windows cmd.exe console. This is a
 	// no-op on non-Windows systems and on Windows runs only once.
+	// 在旧版Windows上启用对ANSI的支持命令行慰问。
+	// 在非Windows系统上没有操作，在Windows上只运行一次。
 	enableLegacyWindowsANSI()
 
 	if bold {
@@ -263,6 +282,7 @@ func (s Style) Render(str string) string {
 	}
 
 	// Render core text
+	// 渲染核心算法
 	{
 		var b strings.Builder
 
@@ -326,6 +346,7 @@ func (s Style) Render(str string) string {
 	// Set alignment. This will also pad short lines with spaces so that all
 	// lines are the same length, so we run it under a few different conditions
 	// beyond alignment.
+	// 设置对齐。这也将用空格填充短线，这样所有的线都是相同的长度，所以我们在对齐之外的一些不同的条件下运行它。
 	{
 		numLines := strings.Count(str, "\n")
 
@@ -344,6 +365,7 @@ func (s Style) Render(str string) string {
 	}
 
 	// Truncate according to MaxWidth
+	// 根据最大宽度截断
 	if maxWidth > 0 {
 		lines := strings.Split(str, "\n")
 
@@ -355,6 +377,7 @@ func (s Style) Render(str string) string {
 	}
 
 	// Truncate according to MaxHeight
+	// 根据最大高度截断
 	if maxHeight > 0 {
 		lines := strings.Split(str, "\n")
 		str = strings.Join(lines[:min(maxHeight, len(lines))], "\n")
@@ -363,6 +386,7 @@ func (s Style) Render(str string) string {
 	return str
 }
 
+// 设置margin
 func (s Style) applyMargins(str string, inline bool) string {
 	var (
 		topMargin    = s.getAsInt(marginTopKey)
@@ -399,6 +423,7 @@ func (s Style) applyMargins(str string, inline bool) string {
 }
 
 // Apply left padding.
+// 设置padding
 func padLeft(str string, n int, style *termenv.Style) string {
 	if n == 0 {
 		return str
@@ -424,6 +449,7 @@ func padLeft(str string, n int, style *termenv.Style) string {
 }
 
 // Apply right right padding.
+// 设置右边距
 func padRight(str string, n int, style *termenv.Style) string {
 	if n == 0 || str == "" {
 		return str
@@ -448,6 +474,7 @@ func padRight(str string, n int, style *termenv.Style) string {
 	return b.String()
 }
 
+// 较大数
 func max(a, b int) int {
 	if a > b {
 		return a
@@ -455,6 +482,7 @@ func max(a, b int) int {
 	return b
 }
 
+// 较小数
 func min(a, b int) int {
 	if a < b {
 		return a

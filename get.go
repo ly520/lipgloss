@@ -7,6 +7,7 @@ import (
 )
 
 // Returns whether or not the given property is set.
+// 测试某个属性是否已经设置
 func (s Style) isSet(k propKey) bool {
 	_, exists := s.rules[k]
 	return exists
